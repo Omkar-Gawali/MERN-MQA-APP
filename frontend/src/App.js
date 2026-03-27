@@ -13,7 +13,6 @@ import SelectQuizPage from "./pages/SelectQuizPage";
 import CreateQuiz from "./Admin/CreateQuiz";
 import AddQuestion from "./Admin/AddQuestion";
 import AllQuestions from "./Admin/AllQuestions";
-import QuizPage from "./User/QuizPage";
 import CombinedQuiz from "./User/CombinedQuiz";
 import UserResultsPage from "./User/UserResultsPage";
 import UserLeaderboardPage from "./User/UserLeaderboardPage";

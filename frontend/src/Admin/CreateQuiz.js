@@ -1,10 +1,8 @@
 import AdminMenu from "./AdminMenu";
 import Layout from "../components/layout/Layout.js";
 import React, { useEffect, useState } from "react";
-import QuizForm from "../Form/QuizForm";
 import axios from "axios";
 import toast from "react-hot-toast";
-import QuizUpdateForm from "../Form/QuizUpdateForm.js";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

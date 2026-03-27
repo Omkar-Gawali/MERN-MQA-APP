@@ -384,7 +384,6 @@ const getInitials = (name = "") =>
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
 const AdminResultsPage = () => {
-  const { auth } = useAuth();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState({});
