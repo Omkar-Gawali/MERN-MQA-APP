@@ -1,7 +1,6 @@
 import Layout from "../components/layout/Layout";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/authContext";
 import AdminMenu from "./AdminMenu";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -150,53 +149,24 @@ const styles = `
     margin-top: 2px;
   }
 
-  .ar-score-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .ur-score-pill {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 18px; border-radius: 12px;
+    background: rgba(0,255,136,0.07);
+    border: 1px solid rgba(0,255,136,0.18);
+  }
+  .ur-score-num {
     font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 6px 16px;
-    border-radius: 100px;
-    border: 1px solid;
-    white-space: nowrap;
+    font-size: 1.15rem; font-weight: 500; color: #00ff88; letter-spacing: 0.02em;
   }
-  .ar-score-pill.high {
-    background: rgba(57,255,126,0.1);
-    color: #39ff7e;
-    border-color: rgba(57,255,126,0.3);
+  .ur-score-bar-wrap {
+    width: 80px; height: 4px;
+    background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;
   }
-  .ar-score-pill.mid {
-    background: rgba(255,196,0,0.1);
-    color: #ffc400;
-    border-color: rgba(255,196,0,0.3);
+  .ur-score-bar {
+    height: 100%; background: #00ff88; border-radius: 99px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
   }
-  .ar-score-pill.low {
-    background: rgba(255,65,65,0.08);
-    color: #ff6b6b;
-    border-color: rgba(255,65,65,0.25);
-  }
-
-  /* ── Score bar ── */
-  .ar-score-bar-wrap {
-    padding: 0 24px;
-    margin: 14px 0 4px;
-  }
-  .ar-score-bar-track {
-    height: 3px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 100px;
-    overflow: hidden;
-  }
-  .ar-score-bar-fill {
-    height: 100%;
-    border-radius: 100px;
-    transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .ar-score-bar-fill.high { background: #39ff7e; box-shadow: 0 0 8px rgba(57,255,126,0.5); }
-  .ar-score-bar-fill.mid  { background: #ffc400; box-shadow: 0 0 8px rgba(255,196,0,0.4); }
-  .ar-score-bar-fill.low  { background: #ff6b6b; box-shadow: 0 0 8px rgba(255,65,65,0.4); }
 
   /* ── Table ── */
   .ar-table-wrap {
@@ -542,20 +512,16 @@ const AdminResultsPage = () => {
                             </div>
                           </div>
                         </div>
-
-                        <span className={`ar-score-pill ${scoreClass}`}>
-                          {result.score} / {result.answers.length}
-                          &nbsp;·&nbsp;{pct}%
-                        </span>
-                      </div>
-
-                      {/* Score bar */}
-                      <div className="ar-score-bar-wrap">
-                        <div className="ar-score-bar-track">
-                          <div
-                            className={`ar-score-bar-fill ${scoreClass}`}
-                            style={{ width: `${pct}%` }}
-                          />
+                        <div className="ur-score-pill">
+                          <span className="ur-score-num">
+                            {result.score}/{result.answers.length}
+                          </span>
+                          <div className="ur-score-bar-wrap">
+                            <div
+                              className="ur-score-bar"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
                         </div>
                       </div>
 

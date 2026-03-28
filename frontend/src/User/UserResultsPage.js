@@ -121,79 +121,88 @@ const CSS = `
   }
 
   /* ── Table ── */
-  .ur-table-wrap { padding: 0; overflow-x: auto; }
-  .ur-table {
-    width: 100%; border-collapse: collapse;
-    font-size: 0.85rem;
+  .ar-table-wrap {
+    padding: 16px 24px 20px;
+    overflow-x: auto;
   }
-  .ur-table thead tr {
-    background: rgba(255,255,255,0.025);
+
+  .ar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .ar-table thead tr {
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .ur-table th {
-    padding: 11px 20px;
+
+  .ar-table th {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(255,255,255,0.25); text-align: left;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(232,232,240,0.35);
+    font-weight: 500;
+    padding: 0 12px 10px;
+    text-align: left;
   }
-  .ur-table th.center { text-align: center; }
-  .ur-table tbody tr {
+  .ar-table th:last-child { text-align: center; }
+
+  .ar-table tbody tr {
     border-bottom: 1px solid rgba(255,255,255,0.04);
     transition: background 0.15s;
   }
-  .ur-table tbody tr:last-child { border-bottom: none; }
-  .ur-table tbody tr:hover { background: rgba(255,255,255,0.018); }
-  .ur-table td {
-    padding: 14px 20px; color: rgba(255,255,255,0.6);
-    line-height: 1.45; vertical-align: middle;
-    font-size: 0.84rem; font-weight: 400;
+  .ar-table tbody tr:last-child { border-bottom: none; }
+  .ar-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .ar-table td {
+    padding: 11px 12px;
+    color: rgba(232,232,240,0.75);
+    vertical-align: middle;
+    line-height: 1.45;
   }
-  .ur-table td.center { text-align: center; }
+  .ar-table td:last-child { text-align: center; }
 
-  .ur-q-text { color: rgba(255,255,255,0.75); font-weight: 500; }
-
-  /* Answer badge */
-  .ur-ans {
-    display: inline-flex; align-items: center;
-    padding: 5px 12px; border-radius: 8px;
+  .ar-q-num {
     font-family: 'DM Mono', monospace;
-    font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.02em;
-  }
-  .ur-ans-value {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.7);
-  }
-  .ur-ans-skipped {
-    background: rgba(251,191,36,0.08);
-    border: 1px solid rgba(251,191,36,0.2);
-    color: #fbbf24;
+    font-size: 10px;
+    color: rgba(232,232,240,0.25);
+    margin-right: 8px;
   }
 
-  /* Status */
-  .ur-status { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .ur-correct, .ur-incorrect {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 14px; border-radius: 8px;
-    font-size: 0.76rem; font-weight: 600; letter-spacing: 0.03em;
-  }
-  .ur-correct {
-    background: rgba(0,255,136,0.08);
-    border: 1px solid rgba(0,255,136,0.2);
-    color: #00ff88;
-  }
-  .ur-incorrect {
-    background: rgba(239,68,68,0.08);
-    border: 1px solid rgba(239,68,68,0.2);
-    color: #f87171;
-  }
-  .ur-correct-ans {
+  .ar-answer-cell {
     font-family: 'DM Mono', monospace;
-    font-size: 0.68rem; color: rgba(255,255,255,0.2);
-    letter-spacing: 0.03em;
+    font-size: 12px;
+    color: rgba(232,232,240,0.55);
   }
+  .ar-answer-cell.not-attempted {
+    color: rgba(232,232,240,0.2);
+    font-style: italic;
+  }
+
+  .ar-result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .ar-result-badge.correct {
+    background: rgba(57,255,126,0.1);
+    color: #39ff7e;
+    border-color: rgba(57,255,126,0.3);
+  }
+  .ar-result-badge.incorrect {
+    background: rgba(255,65,65,0.08);
+    color: #ff6b6b;
+    border-color: rgba(255,65,65,0.2);
+  }
+
 
   /* ── Empty ── */
   .ur-empty {
@@ -418,61 +427,43 @@ const UserResultsPage = () => {
                       </div>
 
                       {/* Table */}
-                      <div className="ur-table-wrap">
-                        <table className="ur-table">
+                      <div className="ar-table-wrap">
+                        <table className="ar-table">
                           <thead>
                             <tr>
-                              <th>#</th>
-                              <th>Question</th>
-                              <th className="center">Your Answer</th>
-                              <th className="center">Status</th>
+                              <th style={{ width: "55%" }}>Question</th>
+                              <th style={{ width: "28%" }}>Selected Answer</th>
+                              <th style={{ width: "17%" }}>Result</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {result.answers.map((answer, i) => (
-                              <tr key={i}>
-                                <td
-                                  style={{
-                                    fontFamily: "'DM Mono', monospace",
-                                    fontSize: "0.7rem",
-                                    color: "rgba(255,255,255,0.2)",
-                                    width: "36px",
-                                  }}
-                                >
-                                  {String(i + 1).padStart(2, "0")}
+                            {result.answers.map((answer, idx) => (
+                              <tr key={answer.questionId}>
+                                <td>
+                                  <span className="ar-q-num">
+                                    Q{String(idx + 1).padStart(2, "0")}
+                                  </span>
+                                  {answer.questionText || "Question not found"}
                                 </td>
-                                <td className="ur-q-text">
-                                  {answer.questionText}
-                                </td>
-                                <td className="center">
+                                <td>
                                   {answer.selectedAnswer ? (
-                                    <span className="ur-ans ur-ans-value">
+                                    <span className="ar-answer-cell">
                                       {answer.selectedAnswer}
                                     </span>
                                   ) : (
-                                    <span className="ur-ans ur-ans-skipped">
-                                      ⏭ skipped
+                                    <span className="ar-answer-cell not-attempted">
+                                      Not attempted
                                     </span>
                                   )}
                                 </td>
-                                <td className="center">
-                                  <div className="ur-status">
-                                    {answer.isCorrect ? (
-                                      <span className="ur-correct">
-                                        ✓ Correct
-                                      </span>
-                                    ) : (
-                                      <span className="ur-incorrect">
-                                        ✗ Incorrect
-                                      </span>
-                                    )}
-                                    {!answer.isCorrect &&
-                                      answer.correctAnswer && (
-                                        <span className="ur-correct-ans">
-                                          → {answer.correctAnswer}
-                                        </span>
-                                      )}
-                                  </div>
+                                <td>
+                                  <span
+                                    className={`ar-result-badge ${
+                                      answer.isCorrect ? "correct" : "incorrect"
+                                    }`}
+                                  >
+                                    {answer.isCorrect ? "✓ Correct" : "✗ Wrong"}
+                                  </span>
                                 </td>
                               </tr>
                             ))}
